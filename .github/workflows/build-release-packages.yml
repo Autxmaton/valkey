@@ -59,30 +59,37 @@ jobs:
         with:
           ref: ${{ inputs.version || github.ref_name }}
 
-  release-build-linux-x86-packages:
-    needs:
-      - release-build-get-meta
-      - generate-build-matrix
-    uses: ./.github/workflows/call-build-linux-x86-packages.yml
-    with:
-      version: ${{ needs.release-build-get-meta.outputs.version }}
-      ref: ${{ inputs.version || github.ref_name }}
-      build_matrix: ${{ needs.generate-build-matrix.outputs.x86_64-build-matrix }}
-      region: us-west-2
-    secrets:
-      bucket_name: ${{ secrets.AWS_S3_BUCKET }}
-      role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+  # release-build-linux-x86-packages:
+  #   needs:
+  #     - release-build-get-meta
+  #     - generate-build-matrix
+  #   uses: ./.github/workflows/call-build-linux-x86-packages.yml
+  #   with:
+  #     version: ${{ needs.release-build-get-meta.outputs.version }}
+  #     ref: ${{ inputs.version || github.ref_name }}
+  #     build_matrix: ${{ needs.generate-build-matrix.outputs.x86_64-build-matrix }}
+  #   secrets:
+  #     bucket_name: ${{ secrets.AWS_S3_BUCKET }}
+  #     role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
 
-  release-build-linux-arm-packages:
+  # release-build-linux-arm-packages:
+  #   needs:
+  #     - release-build-get-meta
+  #     - generate-build-matrix
+  #   uses: ./.github/workflows/call-build-linux-arm-packages.yml
+  #   with:
+  #     version: ${{ needs.release-build-get-meta.outputs.version }}
+  #     ref: ${{ inputs.version || github.ref_name }}
+  #     build_matrix: ${{ needs.generate-build-matrix.outputs.arm64-build-matrix }}
+  #   secrets:
+  #     bucket_name: ${{ secrets.AWS_S3_BUCKET }}
+  #     role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+
+  trigger-docker-build:
     needs:
       - release-build-get-meta
-      - generate-build-matrix
-    uses: ./.github/workflows/call-build-linux-arm-packages.yml
+    uses: ./.github/workflows/trigger-valkey-container.yml
     with:
       version: ${{ needs.release-build-get-meta.outputs.version }}
-      ref: ${{ inputs.version || github.ref_name }}
-      build_matrix: ${{ needs.generate-build-matrix.outputs.arm64-build-matrix }}
-      region: us-west-2
     secrets:
-      bucket_name: ${{ secrets.AWS_S3_BUCKET }}
-      role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+      token: ${{ secrets.PAT_TOKEN }}
