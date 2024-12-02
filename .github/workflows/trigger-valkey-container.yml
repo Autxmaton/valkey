@@ -1,0 +1,24 @@
+name: Trigger Docker build
+
+on:
+  workflow_call: 
+    inputs:
+      version:
+        description: The version of Valkey to create.
+        type: string
+        required: true
+    secrets:
+      token:
+        description: The Github token or similar to authenticate with.
+        required: true
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger build
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.token }}
+          repository: Autxmaton/valkey-container
+          event-type: build-release
+          client-payload: '{"version": "${{ inputs.version }}"}'
