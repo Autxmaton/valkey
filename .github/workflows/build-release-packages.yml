@@ -87,3 +87,13 @@ jobs:
       bucket: ${{ secrets.AWS_S3_BUCKET }}
       access_key_id: ${{ secrets.AWS_S3_ACCESS_KEY_ID }}
       secret_access_key: ${{ secrets.AWS_S3_ACCESS_KEY }}
+
+  trigger-docker-build:
+    needs:
+      - release-build-get-meta
+    uses: ./.github/workflows/trigger-valkey-container.yml
+    with:
+      version: ${{ needs.release-build-get-meta.outputs.version }}
+    secrets:
+      token: ${{ secrets.PAT_TOKEN }}
+    
