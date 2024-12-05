@@ -29,7 +29,8 @@ jobs:
           HASH=$(sha256sum $FILENAME | cut -d ' ' -f 1)
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          echo "hash $FILENAME sha256 $HASH $URL" | cat - README > temp && mv temp README
+          NEW_HASH_LINE="hash $FILENAME sha256 $HASH $URL"
+          sed -i "/^#$/a $NEW_HASH_LINE" README
           git add README
           git commit -s -m "Add hash for ${VERSION}."
           git push
