@@ -1,7 +1,7 @@
 name: Trigger Docker build
 
 on:
-  workflow_call: 
+  workflow_call:
     inputs:
       version:
         description: The version of Valkey to create.

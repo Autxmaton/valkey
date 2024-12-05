@@ -106,7 +106,7 @@ jobs:
     secrets:
       bucket_name: ${{ needs.release-build-get-meta.outputs.is_test == 'true' && secrets.AWS_TEST_BUCKET || secrets.AWS_S3_BUCKET }}
       role_to_assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-  
+
   trigger-docker-build:
     needs:
       - release-build-get-meta
